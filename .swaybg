@@ -1,0 +1,2 @@
+pkill swaybg
+swaybg --image ~/.walls/him4.jpg

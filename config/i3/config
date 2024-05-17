@@ -1,0 +1,169 @@
+set $mod Mod4
+set $term kitty --single-instance
+set $ring (mpv --volume=100 ~/.notif/nothing.mp3 &)
+
+floating_modifier $mod
+focus_follows_mouse yes
+
+font pango:robotomono nerd font 10
+
+#exec --no-startup-id libinput-gestures-setup start &
+exec --no-startup-id xbindkeys &
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id mpv --volume=100 ~/.notif/windows.opus &
+
+exec_always --no-startup-id xss-lock -- ~/.config/i3/scripts/lock.sh &
+exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc &
+exec_always --no-startup-id sleep 1 && $ring &
+exec_always --no-startup-id picom --config ~/.config/picom/picom.conf -b &
+exec_always --no-startup-id ~/.config/polybar/launch.sh &
+
+#wallpaper
+exec_always --no-startup-id ~/.fehbg &
+
+#exec once on startup
+exec --no-startup-id ~/.scripts/battery.sh &
+exec --no-startup-id autocutsel &
+
+
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.scripts/volume --inc && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/.scripts/volume --dec && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id ~/.scripts/volume --toggle && $refresh_i3status
+
+bindsym XF86MonBrightnessUp exec --no-startup-id ~/.scripts/backlight --inc
+bindsym XF86MonBrightnessDown exec --no-startup-id ~/.scripts/backlight --dec
+
+bindsym $mod+Return exec --no-startup-id $term
+
+bindsym $mod+e exec --no-startup-id rofi -modi emoji -config ~/.config/rofi/config.rasi -show emoji -font "Roboto Mono Nerd Font 12"
+bindsym $mod+d exec --no-startup-id rofi -show drun -config ~/.config/rofi/config.rasi -font "Roboto Mono Nerd Font 11"
+
+bindsym End exec --no-startup-id dunstctl close-all
+
+# change focus
+bindsym $mod+Tab focus left
+bindsym $mod+grave workspace next
+bindsym $mod+Shift+grave workspace prev
+
+#cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Right move right
+
+bindsym $mod+q --release kill
+bindsym $mod+f --release fullscreen toggle
+bindsym $mod+space --release floating toggle
+bindsym $mod+Shift+Up --release sticky toggle
+
+set $ws1 "1" 
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+bindsym $mod+Left gaps inner current minus 3
+bindsym $mod+Right gaps inner current plus 3
+bindsym $mod+Down gaps inner current set 8
+bindsym $mod+Up gaps inner current set 0
+bindsym $mod+j gaps inner current set 250
+
+bindsym $mod+Shift+c reload
+
+#restart i3
+bindsym $mod+Shift+r --release restart
+
+#logout
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Do you really want to exit i3?' -B 'Yes, exit i3' 'i3-msg exit'"
+
+mode "resize" {
+        bindsym j resize shrink width 60 px or 60 ppt
+        bindsym k resize grow width 60 px or 60 ppt
+        bindsym h resize grow height 60 px or 60 ppt
+        bindsym l resize shrink height 60 px or 60 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+r mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+#bindsym for apps
+bindsym $mod+n exec --no-startup-id $term lf
+bindsym $mod+t exec --no-startup-id thunar &
+bindsym $mod+b exec --no-startup-id firefox &
+bindsym $mod+Shift+b exec --no-startup-id firefox --private-window &
+bindsym $mod+c exec --no-startup-id chromium &
+bindsym $mod+p exec --no-startup-id $term nmtui &
+bindsym $mod+i exec --no-startup-id blueman-manager &
+
+for_window [title="Bluetooth Devices"] floating enable
+for_window [title="Bluetooth Devices"] resize set 400 400
+for_window [title="video0 - mpv"] border pixel 4
+for_window [title="video0 - mpv"] resize set 300 300
+for_window [title="Spotify Free"] border pixel 4
+
+#screenshot & screencapture
+bindsym Print exec flameshot gui 
+bindsym $mod+Print exec $term ffmpeg -video_size 1920x1080 -framerate 30 -f x11grab -i :0.0 -c:v libx264rgb -crf 0 -preset ultrafast -color_range 2 ~/Videos/recordings/rec_$(date "+%d-%m-%y_%H-%M").mp4
+
+smart_borders on
+gaps inner 4
+default_border pixel 2
+floating_maximum_size 1700 x 1200
+
+#poweroff
+bindsym $mod+Shift+Home exec brightnessctl set 70% && poweroff
+bindsym $mod+Mod1+Home exec reboot
+
+# class                 border  bground text    indicator child_border
+client.focused          #ffb703 #285577 #FFFFFF #2E9EF4   #d2b7e5
+client.focused_inactive #ffb703 #5F676A #FFFFFF #484E50   #d2b7e5
+client.unfocused        #333333 #222222 #888888 #292D2E   #222222
+client.urgent           #2F343A #900000 #FFFFFF #900000   #900000
+client.placeholder      #000000 #0C0C0C #FFFFFF #000000   #0C0C0C
+client.background       #FFFFFF
+
+#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+#brightness using 'brightnessctl'
+#bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +4%
+#bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 4%-
+
+###firefox about:config  full-screen-api.ignore-widgets ::::: for full screen with bar
+###						 ui.key.menuAccessKeyFocuses :::: for altkey turn off

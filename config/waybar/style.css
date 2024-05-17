@@ -1,0 +1,147 @@
+* {
+    border: none;
+    font-family: JetBrainsMono Nerd Font Mono;
+    font-weight: 400;
+	font-size: 15px;
+    min-height: 0;
+}
+
+
+window#waybar {
+	background: rgba(10,9,8,0); 
+	color:#dde5b6;
+	font-size: 13px;
+}
+
+tooltip {
+    background: #0A0908;
+    border-radius: 6px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #11111b;
+}
+
+#workspaces button {
+    color: #C5C8C6;
+	padding:0px 1px;
+	margin: 0px 3px;
+}
+
+#workspaces button.active {
+	border-radius: 10px; 
+    background: #221e22;
+}
+
+#workspaces button.focused {
+    color: #e0b1cb;
+    border-radius: 10px;
+}
+
+#workspaces button.urgent {
+    color: #11111b;
+    background: #0A0908;
+    border-radius: 10px;
+}
+
+#workspaces button:hover {
+    background: #0A0908;
+    border-radius: 10px;
+}
+
+#taskbar,
+.custom-spotify, 
+#custom-language,
+#custom-updates,
+#custom-caffeine,
+#custom-weather,
+#window,
+#clock,
+#memory,
+#battery,
+#pulseaudio,
+#network,
+#workspaces,
+#tray,
+#backlight {
+    background: #0A0908;
+	border-radius: 0px;
+    margin: 0px 0px;
+	padding:0px 8px;
+}
+
+#tray {
+}
+
+#workspaces {
+	background: #0A0908;
+    border-radius: 10px;
+    margin-left: 5px;
+	padding: 0px 2px;
+}
+
+#custom-caffeine {
+    color: #89dceb;
+    border-radius: 10px 0px 0px 10px;
+    border-right: 0px;
+    margin-left: 10px;
+}
+
+#custom-language {
+    color: #f38ba8;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#custom-updates {
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#window {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#clock {
+    margin-left: 0px;
+    border-right: 0px;
+}
+
+#network {
+    color: #f9e2af;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#pulseaudio {
+    border-left: 0px;
+    border-right: 0px;
+}
+
+#pulseaudio.microphone {
+    color: #cba6f7;
+    border-left: 0px;
+    border-right: 0px;
+    margin-right: 5px;
+}
+
+#battery {
+    border-left: 0px;
+}
+
+#custom-weather {
+    border-radius: 0px 10px 10px 0px;
+    border-right: 0px;
+    margin-left: 0px;
+}
+
+.custom-spotify {
+    background: #0A0908;
+}
+
+.custom-waybar-mpris {
+	font-size: 10px;
+    background-color: #a7c957;
+    color: black;
+}
+

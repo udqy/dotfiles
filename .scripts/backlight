@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+get_brightness() {
+  brightness=$(brightnessctl get | grep -Eo '[0-9]+')
+  echo "$brightness"  # Add "%" for user-friendliness
+}
+
+inc_brightness() {
+  current_brightness=$(get_brightness)
+  brightnessctl set +2%
+  notify-send -u low -h string:x-canonical-private-synchronous:sys-notify "Increasing: $current_brightness"  
+}
+
+dec_brightness() {
+  current_brightness=$(get_brightness)
+  brightnessctl set 2%-
+  notify-send -u low -h string:x-canonical-private-synchronous:sys-notify "Decreasing: $current_brightness"
+}
+
+usage() {
+  echo "Usage: $0 [--get | --inc | --dec]"
+}
+
+if [[ $# -eq 0 ]]; then
+  get_brightness
+else
+  if [[ "$1" == "--get" ]]; then
+    get_brightness
+  elif [[ "$1" == "--inc" ]]; then
+    inc_brightness
+  elif [[ "$1" == "--dec" ]]; then
+    dec_brightness
+  else
+    usage
+    exit 1
+  fi
+fi
+

@@ -1,0 +1,182 @@
+{
+    "layer": "top",
+    "position": "bottom",
+	//"mode": "dock",
+    "exclusive": false,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "modules-left": [
+        "hyprland/workspaces",
+//		"custom/spotify",
+		"hyprland/window"
+    ],
+    "modules-center":[
+	] ,
+    "modules-right": [
+		"battery",
+	//	"memory",
+ //       "pulseaudio",
+        "clock"
+    ],
+	
+	"wlr/taskbar": {
+		"format": "{icon}",
+		"tooltip-format": "{title}",
+		"on-click": "activate",
+		"all-outputs": true,
+		"active-first": true,
+		"icon-size": 10,
+		"on-click-right": "minimize"
+	},
+	
+	"custom/separator": {
+    	"format": "//",
+    	"interval": "once",
+    	"tooltip": false
+	},
+
+    "hyprland/window": {
+        "format": "/ {} /",
+		"max-length": 50
+    },
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "on-click": "activate",
+        "format": "{icon}",
+		"active-only": false,
+        "persistent-workspaces": {
+            /*"1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": [],
+            "10": []
+        */},
+		"format-icons": {
+    	"1": "1",
+    	"2": "2",
+   	 	"3": "3",
+    	"4": "4",
+    	"5": "5",
+    	"6": "6",
+    	"7": "<span color=\"#7289DA\"></span>",
+    	"8": "🎬",
+    	"9": "☂️",
+    	"10": "<span color=\"#6a994e\"></span>"
+    	}
+    },
+    "custom/updates": {
+        "format": " 📀{}",
+        "interval": 7200,                     // every two hours
+        "exec": "i=$(checkupdates); echo \"$i\" |wc -l; echo \"$i\" |column -t |tr '\n' '\r'",       // # of updates and tooltip details
+        "exec-if": "exit 0",                  // always run; consider advanced run conditions
+        "on-click": "kitty -e sudo pacman -Syu", // update system
+        "signal": 8
+    },
+   "custom/weather" : {
+        "tooltip" : true,
+        "format" : "{}",
+        "interval" : 30,
+        "exec" : "~/.config/waybar/scripts/waybar-wttr.py",
+        "return-type" : "json"
+    },
+    "tray": {
+		"format" : "{:/ }",
+        "icon-size": 12,
+        "spacing": 10
+    },
+    "clock": {
+        "format": "{:/ <span color=\"#87c38f\">time:</span> %R / <span color=\"#bbd686\">date:</span> %d/%m/%y}",
+        "tooltip":"true",
+		"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
+    },
+    "backlight": {
+        "device": "intel_backlight",
+        "format": "/ <span color=\"#bbd686\">brightness:</span> {percent}%",
+        "format-icons": ["🔅", "🔅", "🔅"],
+        "on-scroll-up": "brightnessctl set 3%+",
+        "on-scroll-down": "brightnessctl set 3%-",
+        "min-length": 6
+    },
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
+        },
+        "format": "/ <span color=\"#bbd686\">battery:</span> {capacity}%",
+        "format-charging": "/ charging: {capacity}%",
+        "format-plugged": "/ charging: {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": [" ", " ", " ", " ", " "]
+    },
+    "pulseaudio": {
+        "format": "/ <span color=\"#bbd686\">volume:</span> {volume}%",
+        "tooltip": true,
+        "format-muted": "/  Muted",
+        "on-click": "pamixer -t",
+        "on-scroll-up": "pamixer -i 5 --allow-boost",
+        "on-scroll-down": "pamixer -d 5 --allow-boost",
+        "scroll-step": 5,
+        "format-icons": {
+            "headphone": " ",
+            "hands-free": " ",
+            "headset": " ",
+            "phone": " ",
+            "portable": " ",
+            "car": " ",
+            "default": [" ", " ", " "]
+        }
+    },
+
+	"custom/spotify": {
+    	"exec": "/usr/bin/python3 ~/.config/waybar/scripts/playerctl.py --player spotify",
+    	"format": "/ {}",
+    	"return-type": "json",
+   		"on-click": "playerctl play-pause",
+    	"on-scroll-up": "playerctl next",
+    	"on-scroll-down": "playerctl previous",
+    	"max-length": 40
+	},
+
+	"custom/splash": {
+    	"exec": "hyprctl splash",
+		"interval": "once",
+		"tooltip": false
+    },
+	
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "📣 {volume}%",
+        "format-source-muted": "🔇 Muted",
+        "on-click": "pamixer --default-source -t",
+        "on-scroll-up": "pamixer --default-source -i 5",
+        "on-scroll-down": "pamixer --default-source -d 5",
+        "scroll-step": 5
+    },
+
+	"custom/waybar-mpris": {
+	    "return-type": "json",
+	    "exec": "waybar-mpris --autofocus --pause '' --play '' --order 'ARTIST:POSITION' --separator ' - ' ",
+    	"on-click": "waybar-mpris --send toggle",
+        //"on-click-right": "waybar-mpris --send player-next",
+        //"on-scroll-up": "waybar-mpris --send player-next",
+        //"on-scroll-down": "waybar-mpris --send player-prev",
+        //"on-scroll-up": "waybar-mpris --send next",
+        //"on-scroll-down": "waybar-mpris --send prev",
+    	"escape": true,
+		"format": "🎷 {}"
+	},
+
+	"memory": {
+    	"interval": 20,
+    	"format": "/ <span color=\"#bbd686\">ram:</span>{}%",
+    	"max-length": 20,
+		"tooltip" : "true"
+	}
+}

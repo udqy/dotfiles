@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Get Volume
+get_volume() {
+  volume=$(pamixer --get-volume)
+  echo "$volume"
+}
+
+# Increase Volume with Notification
+inc_volume() {
+  pamixer -i 5 --allow-boost
+  current_volume=$(get_volume)
+  notify-send -u low -h string:x-canonical-private-synchronous:sys-notify -u low "Volume: $current_volume%"
+}
+
+# Decrease Volume with Notification
+dec_volume() {
+  pamixer -d 5 --allow-boost
+  current_volume=$(get_volume)
+  notify-send -u low -h string:x-canonical-private-synchronous:sys-notify -u low "Volume: $current_volume%"
+}
+
+# Toggle Mute
+toggle_mute() {
+  if [ "$(pamixer --get-mute)" == "false" ]; then
+    pamixer -m && notify-send -u low -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched OFF"
+  elif [ "$(pamixer --get-mute)" == "true" ]; then
+    pamixer -u && notify-send -u low -h string:x-canonical-private-synchronous:sys-notify -u low "Volume Switched ON"
+  fi
+  get_volume
+}
+
+# Execute accordingly
+if [[ "$1" == "--get" ]]; then
+  get_volume
+elif [[ "$1" == "--inc" ]]; then
+  inc_volume
+elif [[ "$1" == "--dec" ]]; then
+  dec_volume
+elif [[ "$1" == "--toggle" ]]; then
+  toggle_mute
+else
+  echo "Invalid argument. Usage: $0 [--get | --inc | --dec | --toggle]"
+fi
+
